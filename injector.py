@@ -2,25 +2,44 @@
 # (this script works best with --anticache)
 from bs4 import BeautifulSoup
 from mitmproxy import ctx, http
-
+import argparse
 
 class Injector:
+    '''
     def load(self, loader):
         loader.add_option(
             "scr_url", str, "", "script_url to inject"
         )
+    '''
+    def __init__(self, path):
+        self.path = path
 
     def response(self, flow: http.HTTPFlow) -> None:
-        if ctx.options.scr_url:
+        #print("hola hola hola")
+        #print(self.path)
+
+        if self.path:
             html = BeautifulSoup(flow.response.content, "html.parser")
-            if html.body:
+            print(self.path)
+            print(flow.response.headers["content-type"])
+            if flow.response.headers["content-type"] == 'text/html':
+                print("uuuuuu")
+                print(flow.response.headers["content-type"])
+                print("asdf asdf asdf asdf asdf")
+                print("-----")
+                print("mmmmm")
                 script = html.new_tag(
                     "script",
-                    src=context.src_url,
+                    src=self.path,
                     type='application/javascript')
                 html.body.insert(0, script)
                 flow.response.content = str(html).encode("utf8")
-                context.log("Script injected.")
+                print("Script injected.")
 
+def start():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path", type=str)
+    args = parser.parse_args()
+    return Injector(args.path)
 
-addons = [Injector()]
+#addons = [Injector()]
