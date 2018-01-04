@@ -1,5 +1,3 @@
-#TODO put --yes to all installation commands
-
 # install arpspoof (dsniff)
 apt-get -y install dsniff
 
